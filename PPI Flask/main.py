@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint, url_for, redirect
-from flask_login import login_required, current_user
+from flask_login import current_user
 
 main = Blueprint('main', __name__, template_folder='templates\home')
 
