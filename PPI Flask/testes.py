@@ -33,10 +33,24 @@ for i,l in pontosdict.items():
             for p in a:
                 print(p)'''
 
-TokenDocente = ('324fgd2fdsfsdg343dsfsd2524363tetesd26426gdsgdfgdsg')
-TokenDocente1 = ('')
 
-if TokenDocente1:
-    print('not none')
-else:
-    print('none')
+import datetime
+
+lista_datas_horas = [
+    datetime.datetime(2023, 7, 11, 16, 17, 36),
+    datetime.datetime(2022, 10, 5, 8, 30, 0),
+    datetime.datetime(2023, 1, 15, 14, 45, 12),
+    datetime.datetime(2022, 12, 1, 10, 0, 0)
+]
+
+# Ordenando a lista de datas e horas
+lista_ordenada = sorted(lista_datas_horas)
+
+# Alterando a ordem das datas para "Dia, mês e ano"
+lista_formatada = [data_hora.strftime("%d/%m/%Y") for data_hora in lista_ordenada]
+
+# Exibindo a lista formatada
+for data_formatada in lista_formatada:
+    print(data_formatada)
+
+

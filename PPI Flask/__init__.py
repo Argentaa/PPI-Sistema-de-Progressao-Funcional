@@ -1,11 +1,10 @@
-import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer
 import mysql.connector
 
-db = mysql.connector.connect(host='localhost',database='bd_progparcial',user='root',password='root')
+db = mysql.connector.connect(host='localhost',database='ppi',user='root',password='root')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '(ztu2h72t%u#t%1avh_a-i=%@7fdz19!_s1g1*(-nknq+b_op_'

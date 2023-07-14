@@ -18,8 +18,14 @@
         font-size: 20px;
         font-weight: 300;
     }
+
+    .alterarcriterios {
+        margin: 20px;
+    }
 </style>
 
-<a class="btn btn-warning me-2" type="button" href="{{url_for('cppd.alterar_requerimentos')}}">Alterar Criterios Requerimento</a>
+<div align="center">
+    <a class="btn btn-warning me-2 alterarcriterios" type="button" href="{{url_for('cppd.alterar_requerimentos')}}">Alterar Criterios Requerimento</a>
+</div>
 
 {% endblock conteudo %}

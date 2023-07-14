@@ -19,9 +19,8 @@
         font-size: 20px;
         font-weight: 500;
     }
-
-
 </style>
+
 <h1>Minha Conta</h1>
 
 <div class="container">
@@ -30,10 +29,9 @@
             <div class="card border-0 shadow rounded-3 my-5">
                 <div class="card-body p-2 p-sm-2">
                     <div class="row">
-                        <div class="col-sm-4">
-                            <img
-                                src="https://static.vecteezy.com/ti/vetor-gratis/p1/2318271-icone-do-perfil-do-usuario-vetor.jpg"
-                                width="200" height="200" class="image">
+                        <div class="col-sm-4" style="text-align: center;">
+                        <br>
+                            <img src="{{url_for('static', filename=foto)}}" width="200" height="200" class="image">
                         </div>
                         <div class="col-sm-8">
                             <br>
@@ -41,11 +39,16 @@
                             <h2>Número SIAPE: {{siape}}</h2>
                             <h2>Email: {{email}}</h2>
                             <h2>CPF: {{cpf}}</h2>
+                            {% if nivelcap == "" %}
+                                <h2>Nivel Capacitação: Faça um requerimento para mostrar</h2>
+                            {% else %}
+                                <h2>Nivel Capacitação: {{nivelcap}}</h2>
+                            {% endif %}
                             <h2>CPPD: {{cppd}}</h2>
                         </div>
                     </div>
                     <div class="row justify-content-end">
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <a class="btn btn-warning btn-sm"
                                 data-bs-toggle="modal"
                                 data-bs-target="#alterarDados" href="#"
@@ -63,7 +66,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="alterarDados" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -72,7 +74,7 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Editar Informações da Conta</h5>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{url_for('docente.minha_conta_post')}}">
+                <form method="POST" action="{{url_for('docente.minha_conta_post')}}" enctype="multipart/form-data">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingNome" placeholder="Nome" name='Nome' value="{{nome}}" required>
                         <label for="floatingNome">Nome</label>
@@ -88,6 +90,10 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingEmail" placeholder="Email" name='Email' value="{{email}}" required>
                         <label for="floatingEmail">Email</label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input class="form-control form-control-sm campo-arquivo" id="floatingFoto" name="Foto" type="file">
+                        <label for="floatingFoto">Foto</label>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>

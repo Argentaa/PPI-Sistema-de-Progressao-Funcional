@@ -2,10 +2,6 @@
 {% block conteudo %}
 
 <style>
-    body {
-        background-color: whitesmoke;
-    }
-
     .btn-login {
         font-size: 0.9rem;
         letter-spacing: 0.05rem;
@@ -62,12 +58,11 @@
                         
                                 if (senha !== senhaConfirm) {
                                     passwordMatch.style.display = "block";
-                                    event.preventDefault(); // Impede o envio do formulário
+                                    event.preventDefault();
                                 }
                             }
                         
-                            // Adicione o evento submitForm() ao evento "submit" do formulário
-                            var form = document.getElementById("formsenha"); // Substitua "seu-formulario" pelo ID correto do seu formulário
+                            var form = document.getElementById("formsenha"); 
                             form.addEventListener("submit", submitForm);
                         </script>
                         

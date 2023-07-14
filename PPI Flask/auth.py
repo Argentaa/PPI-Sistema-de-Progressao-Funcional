@@ -27,7 +27,7 @@ def login_post():
         record = cursor.fetchone()
         
         if record and check_password_hash(record[5], Senha):
-            login_user(User(record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
+            login_user(User(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]))
             
             if record[6] == 1:
                 return redirect(url_for('cppd.cppd_home'))
@@ -100,7 +100,7 @@ def esqueci_senha_post():
         data = {
             'app_name' : "CPPD",
             'title' : 'Redefinição de Senha',
-            'body' : f'Para redefinir sua senha, clique no botão abaixo <br> (O Link tem validade de 2 horas)',
+            'body' : f'Para redefinir sua senha, clique no botão abaixo (O Link tem validade de 2 horas)',
             'reset_link' : reset_link
         }
         msg.html = render_template("email.html", data=data)

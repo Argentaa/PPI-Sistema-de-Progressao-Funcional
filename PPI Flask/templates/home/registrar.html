@@ -31,7 +31,7 @@
                     {% endwith %}
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Registro Professor</h5>
 
-                    <form method='POST' id='formform'>
+                    <form method='POST' id='formsubmit'>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="floatingNome" placeholder="Nome" name='Nome' required>
                             <label for="floatingNome">Nome</label>
@@ -83,7 +83,7 @@
                             }
                         
                             // Adicione o evento submitForm() ao evento "submit" do formulário
-                            var form = document.getElementById("formform"); // Substitua "seu-formulario" pelo ID correto do seu formulário
+                            var form = document.getElementById("formsubmit"); // Substitua "seu-formulario" pelo ID correto do seu formulário
                             form.addEventListener("submit", submitForm);
                         </script>
 
