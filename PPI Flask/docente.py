@@ -49,7 +49,9 @@ def minha_conta_post():
         Nome = request.form['Nome']
         Email = request.form['Email']
         Foto = request.files['Foto']
+        fotosave = f'{current_user.id}.jpg'
         
+               
         if request.files['Foto'].filename == '':
             pass
         else:
@@ -57,7 +59,7 @@ def minha_conta_post():
         
         print(f'CPF: {CPF} SIAPE: {SIAPE} Nome:{Nome}')
 
-        cursor.execute("""UPDATE docente SET CPF=%s, Nome=%s, SIAPE=%s, Email=%s WHERE id=%s""", (CPF, Nome, SIAPE, Email, current_user.id))
+        cursor.execute("""UPDATE docente SET CPF=%s, Nome=%s, SIAPE=%s, Email=%s, foto=%s WHERE id=%s""", (CPF, Nome, SIAPE, Email, fotosave, current_user.id))
         db.commit()
         return redirect(url_for('docente.minha_conta'))
 

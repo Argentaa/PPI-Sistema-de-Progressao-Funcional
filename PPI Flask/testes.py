@@ -31,7 +31,7 @@ for i,l in pontosdict.items():
         print('\ncategoria', j)
         for a in k:
             for p in a:
-                print(p)'''
+                print(p)
 
 
 import datetime
@@ -51,6 +51,15 @@ lista_formatada = [data_hora.strftime("%d/%m/%Y") for data_hora in lista_ordenad
 
 # Exibindo a lista formatada
 for data_formatada in lista_formatada:
-    print(data_formatada)
+    print(data_formatada)'''
+    
+joao = []
+
+if joao:
+    print(True)
+else:
+    print(False)
+    
+    
 
 

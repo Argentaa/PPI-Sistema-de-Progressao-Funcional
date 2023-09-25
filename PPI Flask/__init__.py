@@ -3,6 +3,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer
 import mysql.connector
+import os
 
 db = mysql.connector.connect(host='localhost',database='ppi',user='root',password='root')
 
@@ -16,6 +17,9 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'cppd.iffar@gmail.com'
 app.config['MAIL_PASSWORD'] = 'mqcpgfkwtdywveyb'
+
+UPLOAD_FOLDER = '/static/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 mail = Mail(app)
 

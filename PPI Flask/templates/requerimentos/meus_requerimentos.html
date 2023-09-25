@@ -30,13 +30,36 @@
         font-size: 15px;
         font-weight: 400;
         margin-top: 20px;
+
+        .flash-container {
+        position: absolute;
+        top: 70px; 
+        left: 50%;
+        transform: translateX(-50%);
+        }
+
     }
 
 </style>
 
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 15px; text-align:center">
+                        {{ messages[0] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endwith %}
+
 {% if requerimentos|length == 0 %}
     <h1 style="margin-bottom: 30px;">Você ainda não tem nenhum requerimento!</h1>
-
 {% else %}
 
 <h1>Meus Requerimentos</h1>
@@ -63,8 +86,8 @@
                         </div>
                         
                         <div class="col-3">
-                            <a class="btn btn-warning" type="button" href="/requerimento/{{i[0]}}" style="font-size: 12px;">Editar Requerimento</a>
-                            <a class="btn btn-danger" type="button" href="/excluir_requerimento/{{i[0]}}" style="font-size: 12px; color:black; margin-top:10px;">Excluir Requerimento</a>
+                            <a class="btn btn-warning" type="button" href="/requerimento/{{i[0]}}" style="font-size: 12px;">Continuar Requerimento</a>
+                            <a class="btn btn-danger" type="button" href="/excluir_requerimento/{{i[0]}}" style="font-size: 13px; color:black; margin-top:10px;">Excluir Requerimento</a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +126,6 @@
                         {% for i in niveisCap %} 
                             <option value="{{i}}">{{i}}</option>
                         {% endfor %}
-                    
                     {% else %}
                         {% for i in niveisCap %} 
                             {% if i == professor[2] %}
@@ -111,13 +133,10 @@
                             {% else %}
                                 <option value="{{i}}">{{i}}</option>
                             {% endif %}
-
                         {% endfor %}
-
                     {% endif %}
-
                     </select>
-
+                    
                     <hr>
 
                     <div class="form-floating mb-3">

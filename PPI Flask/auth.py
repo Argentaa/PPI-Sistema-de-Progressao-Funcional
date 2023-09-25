@@ -30,8 +30,10 @@ def login_post():
             login_user(User(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]))
             
             if record[6] == 1:
+                flash('Logado com sucesso!')
                 return redirect(url_for('cppd.cppd_home'))
 
+            flash('Logado com sucesso!')
             return redirect(url_for('docente.home_docente'))
         
         else:
@@ -153,4 +155,5 @@ def resetar_senha_post(token):
 @auth.route('/logout')
 def logout():
     logout_user()
+    flash("Conta deslogada com sucesso!")
     return redirect(url_for('main.principal'))

@@ -55,10 +55,20 @@
       </button>
 
       <form class="mx-right">
-        <a class="btn btn-sm" type="button" href="{{url_for('cppd.corrigir_requerimentos')}}">Corrigir Requerimentos</a>
+        <a class="btn btn-sm" type="button" href="{{url_for('cppd.gerenciar_professores')}}">Gerenciar Professores</a>
+        <a class="btn btn-sm" type="button" href="{{url_for('cppd.listar_requerimentos')}}">Corrigir Requerimentos</a>
         <a class="btn btn-sm" type="button" href="{{url_for('docente.meus_requerimentos')}}">Meus Requerimentos</a>
         <a class="btn btn-sm me-2" type="button" href="{{url_for('docente.ajuda_docente')}}">Ajuda</a>
-        <a class="btn btn-success me-2" type="button" href="{{url_for('docente.minha_conta')}}">Minha Conta</a>
+        <div class="btn-group">
+          <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Minha Conta
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li class="text-center"><a class="dropdown-item btn btn-warning btn-sm" href="{{url_for('docente.minha_conta')}}" style="color: black; font-family: 'Poppins'; font-weight: 300;">Meus Dados</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="text-center"><a class="dropdown-item btn btn-danger btn-sm" href="{{url_for('auth.logout')}}" style="color: black; font-family: 'Poppins'; font-weight: 300;">Sair da Conta</a></li>
+          </ul>
+        </div>
       </form>
     </div>
   </nav>

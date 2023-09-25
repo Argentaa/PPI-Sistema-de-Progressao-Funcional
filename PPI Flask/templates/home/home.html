@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block conteudo %}
-
 <style>
     h1 {
         text-align: center;
@@ -20,7 +19,30 @@
         font-size: 20px;
         font-weight: 300;
     }
+    .flash-container {
+        position: absolute;
+        top: 70px; 
+        left: 50%;
+        transform: translateX(-50%);
+    }
 </style>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-container">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ messages[0] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endwith %}
 
 <h1>Progressão Funcional</h1>
 
@@ -30,4 +52,3 @@ após o cumprimento do interstício de 24 (vinte e quatro) meses de efetivo exer
 mediante aprovação em avaliação de desempenho (com média mínima de 120 pontos), conforme a Lei nº 12.772 de 28/12/2012. </h2>
 
 {% endblock conteudo %}
-

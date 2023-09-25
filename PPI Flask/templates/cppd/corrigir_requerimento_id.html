@@ -1,0 +1,216 @@
+{% if cppd == 1 %}
+  {% extends "base_cppd.html" %}
+{% else %}
+  {% extends "base_requerimento.html" %}
+{% endif %}
+
+{% block conteudo %}
+
+<style>
+
+    body {
+      background-image: url('..\\..\\static\\background.jpeg');
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 50px;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 40px;
+        font-weight: 700;
+    }
+    h2 {
+        font-family: "Poppins";
+        font-size: 20px;
+        font-weight: 500;
+        text-align: right;
+        margin-bottom: 32px;
+
+    }
+    h3 {
+        text-align: center;
+        margin-top: 10px;
+        font-family: "Poppins";
+        color: white;
+        font-size: 20px;
+        font-weight: 400;
+    }
+    h4 {
+        font-size: 10px;
+        padding-top: 0px;
+
+    }
+    .container{
+        margin-top: 20px;
+    }
+    .col-sm-8{
+        margin-top: 3px;
+    }
+    .input-style {
+        display: inline-block;
+        width: 64px;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        text-align: center;
+    }
+    
+</style>
+
+<form method='POST' enctype="multipart/form-data" onsubmit="return validateForm()">
+    {% for parte, l in criteriosdict.items() %}
+
+            <h1>{{parte}}</h1>
+
+        {% for categoria, k in l.items(): %}
+            <h3>{{categoria}}</h3>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10 mx-auto">
+                        <div class="card border-0 shadow rounded-3">
+                            <div class="card-body p-3 p-sm-4">
+                                {% for criterio, pontos, ponto_mult, tipo_ponto in k %}
+                                    <div class="row ses">
+                                        <div class="col-sm-7">
+                                            <h2>{{ criterio }}</h2>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" style="text-align: center" pattern="[0-9]+" title="Apenas números são permitidos" name="criterio{{ criterio }}" oninput="ChamarTodas(this)" value="2" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <h4>({{ pontos }})</h4>
+                                                </div>
+                                                <div class="col-7">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <input class="form-control form-control-sm campo-arquivo " name="arquivo{{ criterio }}" type="file" style="display: none;">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <hr>
+                                <div class="row ses">
+                                    <div class="col-sm-7">
+                                        <h2>Total de pontos para essa categoria</h2> 
+                                    </div>
+                                    
+                                    <div class="col-sm-1">
+                                        <span id="total{{ categoria }}" class="input-style"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+    {% endfor %}
+    
+</form>
+
+<script>
+
+    window.onload = function() {
+        calculateMultiplication()
+    }
+
+    function toggleFileInput(input) {
+        var fileInput = input.parentNode.parentNode.nextElementSibling.querySelector('.campo-arquivo');
+        if (input.value.trim() !== '') {
+            fileInput.style.display = 'block';
+            fileInput.required = true;
+        } else {
+            fileInput.style.display = 'none';
+            fileInput.required = false;
+
+        }
+    }
+
+    function calculateMultiplication() {
+        {% for parte, l in criteriosdict.items() %}
+            {% for categoria, k in l.items() %}
+                var total_categoria = 0;
+
+                {% for criterio, pontos, ponto_mult, tipo_ponto in k %}
+
+                    var inputName = 'criterio{{ criterio }}';
+                    var value = parseFloat(document.querySelector('input[name="' + inputName + '"]').value);
+
+                    if (!isNaN(value)) {
+                        if ('{{ tipo_ponto }}' === 'Multiplicacao') {
+                            total_categoria += value * {{ ponto_mult }};
+                        } else {
+                            if (value > {{ ponto_mult }}){
+                                total_categoria += {{ ponto_mult }};
+                            }
+                            else {
+                                total_categoria += value;
+                            }
+                        }
+
+                        var fileInput = document.querySelector('input[name="arquivo{{ criterio }}"]');
+                        var isVisible = value !== 0;  
+                        if (isVisible) {
+                            fileInput.style.display = 'block';
+                            fileInput.required = true;
+                        } else {
+                            fileInput.style.display = 'none';
+                            fileInput.required = false;
+                        }
+                    }
+                {% endfor %}
+                document.getElementById('total{{ categoria }}').textContent = total_categoria;
+            {% endfor %}
+        {% endfor %}
+    }
+
+    
+    function ChamarTodas(input){
+        toggleFileInput(input);
+        calculateMultiplication();
+    }
+
+    function validateForm() {
+        var inputs = document.querySelectorAll('input[type="text"]');
+        var hasNonEmptyInput = false;
+
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value.trim() !== '') {
+                hasNonEmptyInput = true;
+                break;
+            }
+        }
+
+        if (!hasNonEmptyInput) {
+            alert('Por Favor, preencha pelo menos um campo antes de enviar o requerimento');
+            return false; 
+        }
+
+            return true; 
+    }
+
+
+
+</script>
+
+
+{% endblock conteudo %}
+
+

@@ -20,7 +20,32 @@
         font-size: 20px;
         font-weight: 300;
     }
+
+    .flash-container {
+        position: absolute;
+        top: 70px; 
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
 </style>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-container">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-12">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ messages[0] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endwith %}
 
 <h1>Progressão Funcional</h1>
 
