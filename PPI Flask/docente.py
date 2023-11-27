@@ -51,7 +51,6 @@ def minha_conta_post():
         Foto = request.files['Foto']
         fotosave = f'{current_user.id}.jpg'
         
-               
         if request.files['Foto'].filename == '':
             pass
         else:
@@ -63,10 +62,15 @@ def minha_conta_post():
         db.commit()
         return redirect(url_for('docente.minha_conta'))
 
-@docente.route('/ajuda_docente')
-@login_required
-def ajuda_docente():
-
-    return render_template('ajuda_docente.html', nome=current_user.nome, cppd=current_user.cppd)
+@docente.route('/ajuda')
+def ajuda():
+    try:
+        nome=current_user.nome
+        cppd=current_user.cppd
+    except:
+        nome= None
+        cppd= None
+    
+    return render_template('ajuda.html', nome=nome, cppd=cppd) 
 
 

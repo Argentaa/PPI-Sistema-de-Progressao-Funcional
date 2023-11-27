@@ -10,6 +10,4 @@ def principal():
     else:
         return render_template("home.html")
 
-@main.route('/ajuda')
-def ajuda():
-    return render_template("ajuda.html")
+

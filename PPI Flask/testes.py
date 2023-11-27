@@ -53,13 +53,14 @@ lista_formatada = [data_hora.strftime("%d/%m/%Y") for data_hora in lista_ordenad
 for data_formatada in lista_formatada:
     print(data_formatada)'''
     
-joao = []
 
-if joao:
-    print(True)
+
+unique_id = '123criterioNumero tantan'
+posicao = unique_id.find('criterio')
+
+if posicao != -1:
+    print(f'A palavra "criterio" está na posição {posicao} em unique_id.')
+    print(unique_id[:posicao])
 else:
-    print(False)
-    
-    
-
+    print('A palavra "criterio" não foi encontrada em unique_id.')
 

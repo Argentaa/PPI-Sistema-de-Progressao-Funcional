@@ -27,20 +27,47 @@ def login_post():
         record = cursor.fetchone()
         
         if record and check_password_hash(record[5], Senha):
-            login_user(User(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]))
-            
-            if record[6] == 1:
+            if record[20] == 'Inativo':
+                flash('Você deve ativar sua conta, verifique seu email!')
+            else:
+                if record[6] == 1:
+                    flash('Logado com sucesso!')
+                    login_user(User(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]))
+                    return redirect(url_for('cppd.cppd_home'))
+                
+                login_user(User(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]))
                 flash('Logado com sucesso!')
-                return redirect(url_for('cppd.cppd_home'))
-
-            flash('Logado com sucesso!')
-            return redirect(url_for('docente.home_docente'))
+                return redirect(url_for('docente.home_docente'))
         
         else:
             flash('Dados Incorretos, Verifique seus dados.')
             return redirect(url_for('auth.login'))
 
     return render_template("login.html")
+
+@auth.route('/ativar_conta/<token>')
+def ativar_conta(token):
+    
+    cursor = db.cursor()
+    
+    cursor.execute("""SELECT token_reset FROM docente WHERE token_reset=%s""", (token,))
+    TokenDocente = cursor.fetchone()
+    
+    try:
+        if TokenDocente:
+            cursor.execute("""SELECT id FROM docente WHERE token_reset=%s""", (token,))
+            idDocente = cursor.fetchone()
+                
+            cursor.execute("""UPDATE docente SET status=%s WHERE id=%s""", ('Ativo', *idDocente))
+            cursor.execute("""UPDATE docente SET token_reset=NULL WHERE id=%s""", (*idDocente,))
+            db.commit()
+                
+            return render_template("ativar_conta.html")
+        else:
+            return render_template('token_expirado.html')
+    except:
+        return render_template('token_expirado.html')
+    
 
 @auth.route('/registrar')
 def registrar():
@@ -62,11 +89,33 @@ def registrar_post():
 
     cursor.execute("""SELECT * FROM docente WHERE CPF=%s""", (CPF,))
     info = cursor.fetchone()
+    
+    token = serializer.dumps(Email, salt='activate-account')
 
     if info is None:
-        cursor.execute("""INSERT INTO docente (CPF, SIAPE, Nome, Email, Senha, CPPD) VALUES (%s,%s,%s,%s,%s,%s)""", 
-                        (CPF,SIAPE,Nome,Email,generate_password_hash(Senha, method='sha256'),CPPD))
+        cursor.execute("""INSERT INTO docente (CPF, SIAPE, Nome, Email, Senha, CPPD, token_reset, status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)""", 
+                        (CPF,SIAPE,Nome,Email,generate_password_hash(Senha, method='sha256'),CPPD, token, 'Inativo'))
         db.commit()
+        
+        reset_link = request.host_url + 'ativar_conta/' + token
+
+        msg = Message('Ativação de Conta', recipients=[Email], sender='noreply@app.com')
+        
+        data = {
+            'app_name' : "CPPD",
+            'title' : 'Ativação de Conta',
+            'body' : f'Para ativar sua conta, clique no botão abaixo',
+            'reset_link' : reset_link
+        }
+        
+        msg.html = render_template("email_ativar.html", data=data)
+        
+        try:
+            mail.send(msg)
+            flash("Foi enviado um email de confirmação no seu email para a ativação da sua conta")
+        except Exception as e:
+            return render_template("erro_email.html")
+        
         return redirect(url_for('auth.login'))
     else:
         flash('CPF ja cadastrado!')
@@ -75,7 +124,6 @@ def registrar_post():
 @auth.route('/esqueci_senha')
 def esqueci_senha():
     return render_template("esqueci_senha.html")
-
 
 @auth.route('/esqueci_senha', methods=["GET", "POST"])
 def esqueci_senha_post():
@@ -148,8 +196,7 @@ def resetar_senha_post(token):
         db.commit()
         
         return render_template('sucesso_senha.html')
-        
-    
+
     return render_template('resetar_senha.html')
 
 @auth.route('/logout')

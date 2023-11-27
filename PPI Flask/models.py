@@ -3,7 +3,6 @@ from flask_login import UserMixin
 
 cursor = db.cursor()
 
-
 class User(UserMixin):
     def __init__(self, id, cpf, nome, siape, email, senha, cppd, nivelcap):
         self.id = id
