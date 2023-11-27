@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+<style>
+    h1 {
+        text-align: center;
+        margin-top: 120px;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 50px;
+        font-weight: 700;   
+    }
+    h2 {
+        margin-top: 30px;
+        margin-left: 100px;
+        margin-right: 100px;
+        text-align: center;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 20px;
+        font-weight: 300;
+    }
+    
+    .flash-container {
+        position: absolute;
+        top: 70px; 
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-container">
+            <div class="container">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ messages[0] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endwith %}
+
+<h1>Progressão Funcional</h1>
+
+<h2>Avanço na carreira aos titulares de cargos integrantes do Plano de Carreira e Cargos de Magistério do Ensino Básico, 
+Técnico e Tecnológico que integram os Quadros de Pessoal das Instituições Federais de Ensino, 
+após o cumprimento do interstício de 24 (vinte e quatro) meses de efetivo exercício no nível respectivo, 
+mediante aprovação em avaliação de desempenho (com média mínima de 120 pontos), conforme a Lei nº 12.772 de 28/12/2012. </h2>
+
+{% endblock conteudo %}

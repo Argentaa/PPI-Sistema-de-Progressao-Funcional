@@ -1,0 +1,302 @@
+{% if cppd == 1 %}
+  {% extends "base_cppd.html" %}
+{% else %}
+  {% extends "base_requerimento.html" %}
+{% endif %}
+
+{% block conteudo %}
+
+<style>
+
+    body {
+      background-image: url('..\\..\\static\\background.jpeg');
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 50px;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 40px;
+        font-weight: 700;
+    }
+    h2 {
+        font-family: "Poppins";
+        font-size: 20px;
+        font-weight: 500;
+        text-align: right;
+        margin-bottom: 32px;
+
+    }
+    h3 {
+        text-align: center;
+        margin-top: 10px;
+        font-family: "Poppins";
+        color: white;
+        font-size: 20px;
+        font-weight: 400;
+    }
+    h4 {
+        font-size: 10px;
+        padding-top: 0px;
+
+    }
+    .container{
+        margin-top: 20px;
+    }
+    .col-sm-8{
+        margin-top: 3px;
+    }
+    .input-style {
+        display: inline-block;
+        width: 64px;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        text-align: center;
+    }
+    @media print {
+        body {
+            background-image: none;
+        }
+
+        h1, h2, h3, h4 {
+            color: black; 
+        }
+
+    }
+</style>
+
+<form method='POST' enctype="multipart/form-data" id='formularioRequerimento' onsubmit="return validateForm()">
+    {% for parte, l in criteriosdict.items() %}
+
+            <h1>{{parte}}</h1>
+
+        {% for categoria, k in l.items(): %}
+            <h3>{{categoria}}</h3>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10 mx-auto">
+                        <div class="card border-0 shadow rounded-3">
+                            <div class="card-body p-3 p-sm-4">
+                                {% for criterio, pontos, ponto_mult, tipo_ponto, id_crit in k %}
+                                    <div class="row ses">
+                                        <div class="col-sm-6">
+                                            <h2>{{ criterio}}</h2>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div class="input-group mb-3">
+                                                {% if avaliacoes_dict[id_crit]%}
+                                                    {% if avaliacoes_dict[id_crit][0] == 0 %}
+                                                        <input type="text" value="" class="form-control" style="text-align: center" pattern="[0-9]+" title="Apenas números são permitidos" onblur="chamarTodas(this)" name="{{id_crit}}criterio{{ criterio }}" oninput="allfunc()">
+                                                    {% else %}
+                                                        <input type="text" value="{{ avaliacoes_dict[id_crit][0] }}" class="form-control" style="text-align: center" pattern="[0-9]+" title="Apenas números são permitidos" onblur="chamarTodas(this)" name="{{id_crit}}criterio{{ criterio }}" oninput="allfunc()" required>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <input type="text" value="" class="form-control" style="text-align: center" pattern="[0-9]+" title="Apenas números são permitidos" name="{{id_crit}}criterio{{ criterio }}" onblur="chamarTodas(this)" oninput="allfunc()">
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <h4>{{ pontos }}</h4>
+                                                </div>
+                                                {% if id_crit in avaliacoes_dict %}
+                                                    {% if avaliacoes_dict[id_crit][1] != ''%}
+                                                        <div class="col-7">
+                                                            <a class="btn btn-success btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#visualizarArquivo{{avaliacoes_dict[id_crit][1]}}" href="#"
+                                                            type="button"><i class="bi bi-file-earmark-check-fill" style="font-size: 15px;"></i></a>
+                                                        </div>
+
+                                                        <div class="modal fade" id="visualizarArquivo{{avaliacoes_dict[id_crit][1]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Visualizar arquivo já enviado</h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div style="text-align: center; font-size: 20px;">
+                                                                            <i class="bi bi-filetype-pdf"></i> {{avaliacoes_dict[id_crit][1][33:]}} <br><br>
+                                                                        </div>
+                                                                        <iframe src="{{ url_for('static', filename=avaliacoes_dict[id_crit][1]) }}" width="765" height="400"></iframe>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <a class="btn btn-danger" href="/excluir_arquivo/{{id}}/{{avaliacoes_dict[id_crit][1]}}" role="button">Excluir arquivo</a>
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="col-7">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <input class="form-control form-control-sm campo-arquivo " name="{{id_crit}}arquivo{{ criterio }}" type="file" style="display: none;">
+                                                            </div>
+                                                        </div>   
+                                                    {% endif %}
+                                                {% else %}
+                                                    <div class="col-7">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <input class="form-control form-control-sm campo-arquivo " name="{{id_crit}}arquivo{{ criterio }}" type="file" style="display: none;">
+                                                        </div>
+                                                    </div>             
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <hr>
+                                <div class="row ses">
+                                    <div class="col-sm-6">
+                                        <h2>Total de pontos para essa categoria</h2> 
+                                    </div>
+                                    
+                                    <div class="col-sm-1">
+                                        <span id="total{{ categoria }}" class="input-style"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="col-12" align="center">
+        <button class="btn btn-secondary" type="submit" name = 'acao' value='Salvar' onclick="return validateForm()" style="font-family: 'Poppins'; font-weight: 300; font-size:15px;"> Salvar Alterações </button>
+        <button class="btn btn-success" type="submit" name = 'acao' value='Enviar' onclick="return validateForm()" style="font-family: 'Poppins'; font-weight: 300; font-size:15px;"> Enviar Requerimento </button>
+    </div>
+    
+</form>
+
+<script>
+    window.onload = function() {
+        allfunc()
+    }
+
+    window.reload = function() {
+        allfunc()
+    }
+
+    function chamarTodas(inputElement){
+        VerificarPreenchimento(inputElement);
+        allfunc();
+    }
+
+    function VerificarPreenchimento(inputElement) {
+        var valor = inputElement.value;
+
+        if (valor === "" || valor === '') {
+            inputElement.value = 0;
+        }
+    }
+
+    function allfunc() {
+        {% for parte, l in criteriosdict.items() %}
+            {% for categoria, k in l.items() %}
+                var total_categoria = 0;
+
+                {% for criterio, pontos, ponto_mult, tipo_ponto, id_crit in k %}
+
+                    var inputName = '{{id_crit}}criterio{{ criterio }}';
+                    var value = parseFloat(document.querySelector('input[name="' + inputName + '"]').value);
+
+                    if (!isNaN(value)) {
+
+                        if ('{{ tipo_ponto }}' === 'Multiplicacao') {
+                            total_categoria += value * {{ ponto_mult }};
+                        } 
+                        else if ('{{ tipo_ponto }}' === 'Maximo') {
+                            if (value > {{ ponto_mult }}){
+                                total_categoria += {{ ponto_mult }};
+                            }
+                            else {
+                                total_categoria += value;
+                            }
+                        }
+                        else {
+                            total_categoria *= value
+                        }
+                        
+                        {% if id_crit in avaliacoes_dict %}
+                            {% if avaliacoes_dict[id_crit][1] == '' %}
+                                var fileInput = document.querySelector('input[name="{{id_crit}}arquivo{{ criterio }}"]');
+                                var isVisible = value !== 0;
+                                
+                                if (isVisible) {
+                                    console.log(isVisible)
+                                    fileInput.style.display = 'block';
+                                    fileInput.required = true;
+                                } else {
+                                    console.log(isVisible)
+                                    fileInput.style.display = 'none';
+                                    fileInput.required = false;
+                                }
+                            {% endif %}
+
+                        {% else %}
+
+                        var fileInput = document.querySelector('input[name="{{id_crit}}arquivo{{ criterio }}"]');
+                        var isVisible = value !== 0;
+                        
+                        if (isVisible) {
+                            console.log(isVisible)
+                            fileInput.style.display = 'block';
+                            fileInput.required = true;
+                        } else {
+                            console.log(isVisible)
+                            fileInput.style.display = 'none';
+                            fileInput.required = false;
+                        }
+
+                        {% endif %}
+
+                    }
+
+                {% endfor %}
+                document.getElementById('total{{ categoria }}').textContent = total_categoria;
+            {% endfor %}
+        {% endfor %}
+    }
+
+
+    function validateForm() {
+        var inputs = document.querySelectorAll('input[type="text"]');
+        var hasNonEmptyInput = false;
+
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value.trim() !== 0) {
+                hasNonEmptyInput = true;
+                break;
+            }
+        }
+
+        if (!hasNonEmptyInput) {
+            alert('Por Favor, preencha pelo menos um campo antes de enviar o requerimento');
+            return false; 
+        }
+
+            return true; 
+    }
+    
+</script>
+
+
+{% endblock conteudo %}
+
+

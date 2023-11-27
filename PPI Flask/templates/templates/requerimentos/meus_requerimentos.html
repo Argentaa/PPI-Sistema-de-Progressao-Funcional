@@ -1,0 +1,214 @@
+{% if cppd == 1 %}
+  {% extends "base_cppd.html" %}
+{% else %}
+  {% extends "base_requerimento.html" %}
+{% endif %}
+
+{% block conteudo %}
+
+<style>
+
+    h1 {
+        text-align: center;
+        margin-top: 60px;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 50px;
+        font-weight: 700;   
+    }
+    h2 {
+        text-align: center;
+        font-family: "Poppins";
+        color: black;
+        font-size: 25px;
+        font-weight: 400;
+    }
+    h3 {
+        text-align: center;
+        font-family: "Poppins";
+        color: black;
+        font-size: 15px;
+        font-weight: 400;
+        margin-top: 20px;
+    }
+
+    .flash-container {
+    position: absolute;
+    top: 70px; 
+    left: 50%;
+    transform: translateX(-50%);
+    }
+
+    
+
+</style>
+
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 15px; text-align:center">
+                        {{ messages[0] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endwith %}
+
+{% if requerimentos|length == 0 %}
+    <h1 style="margin-bottom: 30px;">Você ainda não tem nenhum requerimento!</h1>
+{% else %}
+
+<h1>Meus Requerimentos</h1>
+
+{% for i in requerimentos %}
+<div class="container">
+    <div class="row">
+        <div class="col-7 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-4">
+                <div class="card-body p-4 p-sm-6">
+                    <div class="row">
+                        <div class="col-9">
+                            <h2>Requerimento de Progressão - N° {{i[0]}}</h2>
+                            {% if i[1] == "Incompleto"%}
+                                <h3>Status: {{i[1]}} <i class="bi bi-exclamation-triangle-fill text-warning"></i></h3>
+                            {% elif i[1] == "Pendente"%}
+                                <h3>Status: {{i[1]}} <i class="bi bi-clock"></i></h3>
+                            {% elif i[1] == "Aprovado"%}
+                                <h3>Status: {{i[1]}} <i class="bi bi-check-circle-fill text-success"></i></h3>
+                            {% else %}
+                                <h3>Status: {{i[1]}} <i class="bi bi-x-circle-fill text-danger"></i></h3>
+                            {% endif %}
+                        </div>
+
+                        {% if i[1] == "Incompleto"%}
+                            <div class="col-3">
+                                <a class="btn btn-warning" type="button" href="/requerimento/{{i[0]}}" style="font-size: 12px;">Continuar Requerimento</a>
+                                <a class="btn btn-danger" type="button" href="/excluir_requerimento/{{i[0]}}" style="font-size: 13px; color:black; margin-top:10px;">Excluir Requerimento</a>
+                            </div>
+                        {% else %}
+                            <div class="col-3 d-flex align-items-center">
+                                <a class="btn btn-secondary" type="button" href="/visualizar_requerimento/{{i[0]}}" style="font-size: 12px;">Visualizar Requerimento</a>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endif %}
+
+<div align="center">
+    <a class="btn btn-success me-2 novorequerimento" type="button"  data-bs-toggle="modal" data-bs-target="#escolherRequerimento" href="#">Novo Requerimento</a>
+</div>
+
+<div class="modal fade" id="escolherRequerimento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Dados do Requerimento</h5>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('requerimentos.meus_requerimentos') }}" enctype="multipart/form-data">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingNome" placeholder="Nome" name='Nome' value="{{professor[0]}}" required>
+                        <label for="floatingNome">Nome</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingSIAPE" placeholder="SIAPE" name='SIAPE' value="{{professor[1]}}" required>
+                        <label for="floatingSIAPE">Número SIAPE</label>
+                    </div>                    
+
+                    <select class="form-select" aria-label="Default select example" id="NivelCapacitacao" name="NivelCapacitacao" required>
+                    {% if professor[2] == "Faça um requerimento primeiro" %}
+                        <option value="" selected> Nivel de Capacitação </option>
+                        {% for i in niveisCap %} 
+                            <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in niveisCap %} 
+                            {% if i == professor[2] %}
+                                <option value="{{professor[2]}}" selected>{{professor[2]}}</option>
+                            {% else %}
+                                <option value="{{i}}">{{i}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+                    
+                    <hr>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingEscolaridade" placeholder="Escolaridade" name="Escolaridade" value="{{professor[3]}}" required >
+                        <label for="floatingEscolaridade">Escolaridade</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingAperfeiçoamento" placeholder="Aperfeiçoamento" name="Aperfeiçoamento" value="{{professor[4]}}">
+                        <label for="floatingAperfeiçoamento">Aperfeiçoamento</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingEspecialização" placeholder="Especialização" name="Especialização" value="{{professor[5]}}">
+                        <label for="floating">Especialização</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingMestrado" placeholder="Mestrado" name="Mestrado" value="{{professor[6]}}">
+                        <label for="floating">Mestrado</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingDoutorado" placeholder="Doutorado" name="Doutorado" value="{{professor[7]}}">
+                        <label for="floatingDoutorado">Doutorado</label>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingLotacao" placeholder="Lotação" name="Lotacao" value="{{professor[8]}}" required>
+                        <label for="floatingLotacao">Lotação</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingDiretoria" placeholder="Diretoria" name="Diretoria" required value="{{professor[9]}}">
+                        <label for="floatingDiretoria">Diretoria</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingCoordenacao" placeholder="Coordenação" name="Coordenacao" value="{{professor[10]}}">
+                        <label for="floatingCoordenacao">Coordenação/Setor</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingCargo" placeholder="Cargo" name="Cargo" value="Professor EBTT">
+                        <label for="floatingCargo">Cargo/Função</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingChefia" placeholder="Chefia" name="Chefia" required value="{{professor[12]}}">
+                        <label for="floatingChefia">Chefia Imediata</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input class="form-control form-control-sm campo-arquivo" id="Arquivos_req" name="Arquivos_req" type="file" required>
+                        <label for="Arquivos_req">Requerimento de Progressão (Encontrados na aba de Ajuda)</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input class="form-control form-control-sm campo-arquivo" id="Arquivos_comp" name="Arquivos_comp" type="file" required>
+                        <label for="Arquivos_comp">Documento comprobatório da entrada em exercício no cargo (Encontrados na aba de Ajuda)</label>
+                    </div>
+
+                    <br>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button class="btn btn-success" type="submit">Criar Requerimento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock conteudo %}

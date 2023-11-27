@@ -1,0 +1,87 @@
+{% extends 'base_cppd.html' %}
+{% block conteudo %}
+
+<style>
+    h1 {
+        text-align: center;
+        margin-top: 60px;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 50px;
+        font-weight: 700;   
+    }
+    h2 {
+        text-align: center;
+        font-family: "Poppins";
+        color: black;
+        font-size: 25px;
+        font-weight: 400;
+    }
+    h3 {
+        text-align: center;
+        font-family: "Poppins";
+        color: black;
+        font-size: 15px;
+        font-weight: 400;
+        margin-top: 20px;
+    }
+
+    .alterarcriterios {
+        margin: 20px;
+    }
+</style>
+
+<h1>Corrigir Requerimentos</h1>
+
+{% for i in requerimentos %}
+<div class="container">
+    <div class="row">
+        <div class="col-7 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-4">
+                <div class="card-body p-4 p-sm-6">
+                    <div class="row">
+                    {% if i[5] == "Incompleto"%}
+                        <div class="col-12">
+                    {% else %}
+                        <div class="col-9">
+                    {% endif %}
+                            <h2>Requerimento de Progressão - N° {{i[0]}}</h2>
+                            <h3>{{i[3]}}</h3>
+                            {% if i[5] == "Incompleto"%}
+                                <h3>Status: {{i[5]}} <i class="bi bi-exclamation-triangle-fill text-warning"></i></h3>
+                            {% elif i[5] == "Pendente"%}
+                                <h3>Status: {{i[5]}} <i class="bi bi-clock"></i></h3>
+                            {% elif i[5] == "Aprovado"%}
+                                <h3>Status: {{i[5]}} <i class="bi bi-check-circle-fill text-success"></i></h3>
+                            {% else %}
+                                <h3>Status: {{i[5]}} <i class="bi bi-x-circle-fill text-danger"></i></h3>
+                            {% endif %}
+                        </div>
+
+                        {% if i[5] == "Pendente"%}
+                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                                <a class="btn btn-warning" type="button" href="/corrigir_requerimentos/{{i[0]}}" style="font-size: 12px;">Corrigir Requerimento</a>
+                            </div>
+                        {% elif i[5] == "Aprovado"%}
+                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                                <a class="btn btn-secondary" type="button" href="/visualizar_requerimento/{{i[0]}}" style="font-size: 12px;">Visualizar Requerimento</a>
+                            </div>  
+                        {% elif i[5] == "Reprovado"%}
+                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                                <a class="btn btn-secondary" type="button" href="/visualizar_requerimento/{{i[0]}}" style="font-size: 12px;">Visualizar Requerimento</a>
+                            </div>  
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+<div align="center">
+    <a class="btn btn-warning me-2 alterarcriterios" type="button" href="{{url_for('cppd.alterar_requerimentos')}}">Alterar Criterios Requerimento</a>
+</div>
+
+{% endblock conteudo %}

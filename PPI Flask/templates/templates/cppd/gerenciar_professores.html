@@ -1,0 +1,75 @@
+{% extends "base_cppd.html" %}
+
+{% block conteudo %}
+
+<style>
+
+    h1 {
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 20px;
+        font-family: "Poppins";
+        color: whitesmoke;
+        font-size: 50px;
+        font-weight: 700;   
+    }
+    h2 {
+        text-align: center;
+        font-family: "Poppins";
+        color: black;
+        font-size: 25px;
+        font-weight: 400;
+    }
+    h3 {
+        text-align: center;
+        font-family: "Poppins";
+        color: black;
+        font-size: 15px;
+        font-weight: 400;
+        margin-top: 20px;
+    }
+
+</style>
+
+<h1>Gerenciar Professores</h1>
+
+<div class="container">
+    <div class="row">
+    {% for docente in docentes %}
+        <div class="col-4 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-4">
+                <div class="card-body p-4 p-sm-12">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="{{url_for('static', filename= docente[1])}}" width="120" height="120" class="image">
+                        </div>
+                        <div class="col-8" style="margin-top: 10px">
+                            Professor(a) {{docente[0]}}<br>
+                            Siape: {{docente[2]}}<br>
+                            CPF: {{docente[5]}}<br>
+
+                            {% if docente[3] == 0 %}
+                                CPPD: Não<br>
+                            {% else %}
+                                CPPD: Sim<br>
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col align-self-end" style="padding-top: 15px;">
+                                {% if docente[3] == 0 %}
+                                    <a class="btn btn-success btn-sm" href="/tornar_cppd/{{docente[4]}}" role="button">Tornar CPPD</a>
+                                {% else %}
+                                    <a class="btn btn-danger btn-sm" href="/remover_cppd/{{docente[4]}}" role="button">Remover CPPD</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    {% endfor %}
+    </div>
+</div>
+
+
+{% endblock conteudo %}

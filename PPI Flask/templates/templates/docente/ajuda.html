@@ -1,0 +1,94 @@
+{% if cppd == 1 %}
+  {% extends "base_cppd.html" %}
+{% elif cppd == 0 %}
+  {% extends 'base_docente.html' %}
+{% else %}
+  {% extends 'base_anonimo.html' %}
+{% endif %}
+
+{% block conteudo %}
+
+<style>
+
+  h2 {
+      font-family: "Poppins", Arial, sans-serif;
+      line-height: 1.6;
+      color: whitesmoke;
+      text-align: justify;
+      padding-top: 10px;
+      padding-bottom: 20px;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 1200px;
+  }
+  p {
+      font-family: "Poppins", Arial, sans-serif;
+      line-height: 1.6;
+      color: whitesmoke;
+      text-align: justify;
+      margin-bottom: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+  ul {
+      font-family: "Poppins", Arial, sans-serif;
+      line-height: 1.6;
+      color: whitesmoke;
+      text-align: justify;
+      margin-bottom: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+  ul li {
+      font-family: "Poppins", Arial, sans-serif;
+    line-height: 1.6;
+    color: whitesmoke;
+    text-align: justify;
+      margin-bottom: 5px;
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+
+</style>
+
+  <h2>Definição de Progressão/Promoção:</h2>
+  <p>Avanço na carreira aos titulares de cargos integrantes do Plano de Carreira e Cargos de Magistério do Ensino Básico, Técnico e Tecnológico que integram os Quadros de Pessoal das Instituições Federais de Ensino, após o cumprimento do interstício de 24 (vinte e quatro) meses de efetivo exercício no nível respectivo, mediante aprovação em avaliação de desempenho (mínimo de 120 pontos), conforme a Lei nº 12.772 de 28/12/2012.</p>
+
+  <p><strong>Documentação necessária para abertura do processo:</strong></p>
+  <ul>
+      <li>Memorando Eletrônico endereçado à Coordenação de Gestão de Pessoas (CGP) do campus.</li>
+      <li>Anexar na parte de Documentos comprobatórios ao clicar em "Novo requerimento":
+          <ul>
+              <li>Requerimento de Progressão (modelo <a href="https://docs.google.com/uc?export=download&id=1aJZxJEc_D1c_M25GLRdRw8ADHkxDvGRW">neste link</a>)</li>
+              <li>Documento comprobatório da entrada em exercício no cargo (se for a primeira progressão) ou a Declaração de Última progressão, disponível no SIGGP, menu Serviços -> Documentos -> Declarações -> Declaração de Última Progressão</li>
+          </ul>
+      </li>
+  </ul>
+
+  <p><strong>Observações:</strong></p>
+  <p>Todos os documentos devem ser anexados no formato PDF.</p>
+  <p>A PROGRESSÃO FUNCIONAL ocorre quando o docente através da avaliação de desempenho avança de NÍVEL:</p>
+  <ul>
+      <li>Da Classe DI, Nível 01 para a Classe DI, Nível 02;</li>
+      <li>Da Classe DII, Nível 01 para a Classe DII, Nível 02;</li>
+      <li>Da Classe DIII, Nível 01 para a Classe DIII, Nível 02;</li>
+      <li>Da Classe DIII, Nível 02 para a Classe DIII, Nível 03;</li>
+      <li>Da Classe DIII, Nível 03 para a Classe DIII, Nível 04;</li>
+      <li>Da Classe DIV, Nível 01 para a Classe DIV, Nível 02;</li>
+      <li>Da Classe DIV, Nível 02 para a Classe DIV, Nível 03;</li>
+      <li>Da Classe DIV, Nível 03 para a Classe DIV, Nível 04.</li>
+  </ul>
+
+  <p>Quando o avanço do Docente tiver alteração da Classe, deverá ser aberto processo com a denominação de PROMOÇÃO, conforme determina a Lei nº 12.772/2012 de 28/12/2012. Ocorre quando o docente avançar:</p>
+  <ul>
+      <li>Da Classe DI, Nível 02 para a Classe DII, Nível 01;</li>
+      <li>Da Classe DII, Nível 02 para a Classe DIII, Nível 01;</li>
+      <li>Da Classe DIII, Nível 04 para a Classe DIV, Nível 01;</li>
+  </ul>
+
+  <p><strong>Previsão legal:</strong></p>
+  <p><a href="https://drive.google.com/file/d/12WOSygFdt5MzqLPYU2yxQlvBmvdQnjqd/view?usp=sharing">Resolução 104/2013 - CONSUP IFFar</a>. Aprova as Diretrizes Gerais para o Processo de Avaliação de Desempenho para fins de Progressão e de Promoção dos Servidores Docentes pertencentes ao Plano de Carreira e Cargos de Magistério Federal do Instituto Federal de Educação, Ciência e Tecnologia Farroupilha.</p>
+
+
+
+{% endblock conteudo %}
